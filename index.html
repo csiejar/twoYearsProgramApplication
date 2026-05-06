@@ -108,9 +108,57 @@
 
   /* ── Print styles ── */
   @media print {
-    body { background: #fff; padding: 0; gap: 0; }
-    .page { width: 100vw; height: 177.78vw; box-shadow: none; border-radius: 0; margin: 0; page-break-after: always; }
-    .pages-wrap { gap: 0; }
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #e8e8e8 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body { 
+      padding-top: 40px !important;
+    }
+    .doc-title { display: none; }
+    .pages-wrap { 
+      display: block !important;
+      width: 100% !important;
+    }
+    .page { 
+      width: 420px !important; 
+      height: 747px !important; 
+      background: var(--cream) !important;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18) !important;
+      border-radius: 4px !important;
+      margin: 0 auto !important; /* 移除所有頁面的上下 margin */
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden;
+      position: relative !important;
+      
+      /* 強制分頁關鍵設定 */
+      page-break-after: always !important;
+      break-after: page !important;
+      page-break-inside: avoid !important;
+      
+      /* 確保圓角在列印時生效 */
+      border: 1px solid rgba(0,0,0,0.01) !important;
+    }
+    .page.cover {
+      background: var(--navy) !important;
+      justify-content: center;
+      margin-top: 0 !important;
+    }
+    body { 
+      padding-top: 0 !important;
+    }
+    .footer-bar {
+      margin-top: auto !important;
+      flex-shrink: 0 !important;
+    }
   }
 </style>
 </head>
