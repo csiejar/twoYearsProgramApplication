@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>二技書審資料-中科</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-mid: #2d3f6b;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --cream: #f8f5ee;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #e8e8e8;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+  h1.doc-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    color: #444;
+    letter-spacing: 2px;
+    font-weight: 400;
+  }
+  .pages-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    width: 100%;
+  }
+
+  /* Each page: 9:16 ratio, A4-ish width */
+  .page {
+    width: 420px;
+    height: 747px;
+    background: var(--cream);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+  }
+
+  /* ── Cover ── */
+  .cover { background: var(--navy); color: #fff; }
+  .cover-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 48px 40px; text-align: center; }
+  .cover-bar { width: 48px; height: 3px; background: var(--gold); margin-bottom: 36px; }
+  .cover-tag { font-size: 11px; letter-spacing: 4px; color: var(--gold-light); margin-bottom: 16px; font-weight: 300; }
+  .cover-title { font-family: 'Noto Serif TC', serif; font-size: 36px; font-weight: 700; line-height: 1.4; color: #fff; margin-bottom: 8px; }
+  .cover-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 44px; letter-spacing: 2px; }
+  .cover-divider { width: 1px; height: 64px; background: var(--gold); opacity: 0.5; margin: 0 auto 36px; }
+  .cover-dept { font-size: 15px; color: rgba(255,255,255,0.75); line-height: 2.2; }
+  .cover-dept span { color: var(--gold); font-weight: 500; }
+  .cover-corner { position: absolute; bottom: 0; right: 0; width: 140px; height: 140px; opacity: 0.06; }
+
+  /* ── Footer bar ── */
+  .footer-bar { height: 3px; background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%); margin-top: auto; flex-shrink: 0; }
+
+  /* ── TOC ── */
+  .toc-header { background: var(--navy); padding: 32px 32px 24px; color: #fff; flex-shrink: 0; }
+  .toc-label { font-size: 10px; letter-spacing: 4px; color: var(--gold-light); margin-bottom: 6px; }
+  .toc-h { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; }
+  .toc-body { padding: 24px 28px; flex: 1; overflow: hidden; }
+  .toc-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid rgba(26,39,68,0.12); }
+  .toc-num { font-size: 10px; font-weight: 700; color: var(--gold); width: 22px; padding-top: 2px; flex-shrink: 0; }
+  .toc-text { flex: 1; }
+  .toc-name { font-size: 14px; font-weight: 500; color: var(--navy); }
+  .toc-sub { font-size: 11px; color: #999; margin-top: 3px; line-height: 1.6; }
+  .toc-pg { font-size: 11px; color: #bbb; margin-left: auto; flex-shrink: 0; padding-top: 2px; }
+
+  /* ── Section pages ── */
+  .sec-header { padding: 28px 32px 20px; border-bottom: 0.5px solid rgba(26,39,68,0.12); flex-shrink: 0; }
+  .sec-num { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 3px; margin-bottom: 4px; }
+  .sec-title { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+  .sec-body { padding: 20px 28px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
+  .sec-accent { width: 3px; background: var(--gold); border-radius: 2px; flex-shrink: 0; }
+  .field-block { display: flex; gap: 12px; }
+  .field-content { flex: 1; min-width: 0; }
+  .field-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--gold); margin-bottom: 7px; }
+  .field-body { background: rgba(26,39,68,0.04); border-radius: 6px; padding: 10px 14px; }
+  .field-line { font-size: 13px; color: #555; line-height: 1.9; }
+  .field-blank { height: 1px; background: rgba(26,39,68,0.1); margin: 5px 0; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .tag { font-size: 11px; padding: 4px 10px; border-radius: 12px; background: rgba(26,39,68,0.07); color: var(--navy-mid); }
+  .info-row { display: flex; gap: 8px; margin-top: 4px; }
+  .info-box { flex: 1; background: rgba(26,39,68,0.04); border-radius: 6px; padding: 9px 12px; }
+  .info-box-label { font-size: 10px; color: #aaa; margin-bottom: 3px; }
+  .info-box-val { font-size: 13px; font-weight: 500; color: var(--navy); }
+  .cert-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid rgba(26,39,68,0.08); }
+  .cert-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  .cert-name { font-size: 13px; color: var(--navy); flex: 1; }
+  .cert-date { font-size: 11px; color: #bbb; }
+  .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .work-card { background: rgba(26,39,68,0.05); border-radius: 6px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
+  .work-text { font-size: 12px; color: #aaa; }
+
+  /* ── Print styles ── */
+  @media print {
+    body { background: #fff; padding: 0; gap: 0; }
+    .page { width: 100vw; height: 177.78vw; box-shadow: none; border-radius: 0; margin: 0; page-break-after: always; }
+    .pages-wrap { gap: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="doc-title">二技書審資料-中科</h1>
+
+<div class="pages-wrap">
+
+  <!-- P1 封面 -->
+  <div class="page cover">
+    <div class="cover-inner">
+      <div class="cover-bar"></div>
+      <div class="cover-tag">BACHELOR PROGRAM APPLICATION</div>
+      <div class="cover-title">書審<br>資料</div>
+      <div class="cover-sub">二年制技術校院</div>
+      <img src="/中科大Logo.png" alt="臺中科技大學Logo" style="display:block;margin:0 auto;opacity:0.5;width: 240px;height: 240px;margin-bottom: 44px;">
+      <div class="cover-dept">
+        申請系所：<span>國立臺中科技大學 資訊管理系</span><br>
+        申請人：<span>卓 家 睿</span><br>
+      </div>
+    </div>
+    <svg class="cover-corner" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="140" cy="140" r="120" fill="none" stroke="#fff" stroke-width="1"/>
+      <circle cx="140" cy="140" r="85" fill="none" stroke="#fff" stroke-width="0.5"/>
+      <circle cx="140" cy="140" r="50" fill="none" stroke="#fff" stroke-width="0.5"/>
+    </svg>
+    <div class="footer-bar"></div>
+  </div>
+
+  <!-- P2 目錄 -->
+  <div class="page">
+    <div class="toc-header">
+      <div class="toc-label">TABLE OF CONTENTS</div>
+      <div class="toc-h">目 錄</div>
+    </div>
+    <div class="toc-body">
+      <div class="toc-item"><div class="toc-num">01</div><div class="toc-text"><div class="toc-name">學歷 · 成績證明</div></div><div class="toc-pg">P.3</div></div>
+      <div class="toc-item"><div class="toc-num">02</div><div class="toc-text"><div class="toc-name">履歷自傳</div><div class="toc-sub">幹部經歷 · 社團經歷 · 競賽經歷 · 活動經歷<br>工讀經歷 · 家庭背景 · 求學歷程 · 各項心得</div></div><div class="toc-pg">P.4-5</div></div>
+      <div class="toc-item"><div class="toc-num">03</div><div class="toc-text"><div class="toc-name">申請動機</div></div><div class="toc-pg">P.6</div></div>
+      <div class="toc-item"><div class="toc-num">04</div><div class="toc-text"><div class="toc-name">校內外證照</div></div><div class="toc-pg">P.7</div></div>
+      <div class="toc-item"><div class="toc-num">05</div><div class="toc-text"><div class="toc-name">專題成果</div></div><div class="toc-pg">P.8</div></div>
+      <div class="toc-item"><div class="toc-num">06</div><div class="toc-text"><div class="toc-name">作品集</div></div><div class="toc-pg">P.9</div></div>
+      <div class="toc-item"><div class="toc-num">07</div><div class="toc-text"><div class="toc-name">活動 · 幹部證明</div></div><div class="toc-pg">P.10</div></div>
+      <div class="toc-item"><div class="toc-num">08</div><div class="toc-text"><div class="toc-name">未來展望</div></div><div class="toc-pg">P.11</div></div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+  <!-- P3 學歷成績 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">01 · EDUCATION</div>
+      <div class="sec-title">學歷 · 成績證明</div>
+    </div>
+    <div class="sec-body">
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">就讀學校</div>
+          <div class="field-body">
+            <div class="field-line">國立臺中科技大學 / 資訊與流通學院</div>
+            <div class="field-line">資訊工程科</div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">在學年份</div>
+          <div class="info-row">
+            <div class="info-box"><div class="info-box-label">入學</div><div class="info-box-val">2021 年 9 月</div></div>
+            <div class="info-box"><div class="info-box-label">畢業</div><div class="info-box-val">2026 年 6 月</div></div>
+            <div class="info-box"><div class="info-box-label">修業</div><div class="info-box-val">五年</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">歷年平均成績</div>
+          <div class="info-row">
+            <div class="info-box"><div class="info-box-label">總平均（截止至五年級上學期）</div><div class="info-box-val">78.43 分</div></div>
+            <div class="info-box"><div class="info-box-label">系排名</div><div class="info-box-val">前 XX%</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">附件說明</div>
+          <div class="field-body">
+            <div class="field-line">☑ 畢業證書（或應屆在學證明）</div>
+            <div class="field-blank"></div>
+            <div class="field-line">☑ 歷年成績單（需加蓋學校印信）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+  <!-- P4 履歷自傳 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">02 · BIOGRAPHY</div>
+      <div class="sec-title">履歷自傳</div>
+    </div>
+    <div class="sec-body">
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">幹部 · 社團經歷</div>
+          <div class="field-body">
+            <div class="field-line">112/07/01 ~ 113/06/30 資訊工程科學會-副會長</div>
+            <div class="field-blank"></div>
+            <div class="field-line">111/02/01 ~ 111/07/31 服務股長</div>
+            <div class="field-blank"></div>
+            <div class="field-line">111/08/01 ~ 112/07/31 班代表</div>
+            <div class="field-blank"></div>
+            <div class="field-line">113/02/01 ~ 113/07/31 事務股長</div>
+            <div class="field-blank"></div>
+            <div class="field-line">114/08/01 ~ 115/07/31 班代表</div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">競賽 · 活動經歷</div>
+          <div class="tag-row">
+            <span class="tag">資訊工程科迎新大露營 - 副召兼小隊輔組長</span>
+            <span class="tag">台積電產學合作課程 - LIT|CMP機台基礎16小時</span>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">工讀經歷</div>
+          <div class="field-body">
+            <div class="field-line">台中市私立傑英英語會話短期補習班 · 英文助教</div>
+            <div class="field-line" style="color:#aaa;font-size:11px;">2022.10 — 2023.11</div>
+          </div>
+          <div class="field-body" style="margin-top: 10px;">
+            <div class="field-line">湯姆熊育樂事業股份有限公司 · 工讀生</div>
+            <div class="field-line" style="color:#aaa;font-size:11px;">2024.07 — 迄今</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+  
+  <!-- P4-1 履歷自傳 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">02 · BIOGRAPHY</div>
+      <div class="sec-title">履歷自傳</div>
+    </div>
+    <div class="sec-body">
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">家庭背景 · 求學歷程</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                我成長於一個支持我學習與探索的家庭，家人鼓勵我培養專長並持續精進自己，使我養成自律與主動學習的習慣。<br>
+                在求學過程中，我對資訊科技產生濃厚興趣，並開始接觸程式開發。<br>
+                從最初學習基礎語法，到後續使用網頁套件進行系統的後端開發，<br>
+                我逐步累積實作經驗。在開發的過程中，我不僅提升了程式能力，也學會系統設計與問題分析。<br>
+                這些經驗讓我更加確立未來朝軟體開發領域發展的方向。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">社團 · 工讀心得</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                在五專三年級的時候，我加入了資訊工程科學會，並成為了副會長。
+                在我任內，我與會長以及其他幹部們共同舉辦了許多活動，在舉辦這些活動當中，我學到了如何與人有效率的溝通、如何以領導者的角色分配任務
+                並確保活動順利進行。這些經驗讓我在組織協調與團隊合作方面有了很大的成長。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+
+  <!-- P5 申請動機 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">03 · MOTIVATION</div>
+      <div class="sec-title">申請動機</div>
+    </div>
+    <div class="sec-body">
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">選擇本系所動機</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                我選擇就讀貴系，主要是因其結合「資訊技術」與「商業管理」的跨領域特色，能培養完整的系統開發與應用能力。<br>
+                貴系以資訊系統、雲端網路與多媒體為核心，並強調專題實作與產業實習，使學生具備實務應用能力。<br>
+                我本身對程式開發與系統設計具有高度興趣，期望透過本系課程深化技術基礎，並學習如何將資訊系統應用於企業與實務場域，
+                因此故選擇報考貴系。
+</div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">學習目標</div>
+          <div class="tag-row">
+            <span class="tag">深化專業知識</span>
+            <span class="tag">跨域整合能力</span>
+            <span class="tag">產學接軌</span>
+            <span class="tag">提升實務開發經驗</span>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">為何適合本系所</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                我具備資訊相關實作經驗，目前已開發中科大場租系統並持續維護中。<br>
+                此經驗使我熟悉系統開發流程與資料處理邏輯，亦培養問題解決能力。<br>
+                此外，我持續自主學習程式技術，對於資訊系統開發具有高度熱忱。<br>
+                貴系強調程式設計、資料庫與系統分析等核心能力，與我的學習方向高度契合，因此我具備良好的基礎與動機，適合就讀貴系。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">與本系所特色的連結</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                本系以資訊系統、雲端網路與多媒體為發展主軸，並透過專題製作、企業實習及證照制度強化實務能力。<br>
+                此外，設有多間實驗室，提供學生完整實作環境。這與我目前進行系統開發的學習方向一致，我期望在貴系持續深化實務能力並接軌產業需求。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+  <!-- P6 競賽證照 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">04 · CERTIFICATIONS</div>
+      <div class="sec-title">校內外證照</div>
+    </div>
+    <div class="sec-body">
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">專業證照</div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">PVQC科技英文-專家級（Tier Five）</div><div class="cert-date">2021.12</div></div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">多益TOEIC-金色證書（905分）</div><div class="cert-date">2023.07</div></div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">TQC+專業設計人才認證-Python3</div><div class="cert-date">2025.03</div></div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">備註</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#aaa;font-size:11px;">相關證書影本將附於本頁之後，並依上方清單順序排列</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+    <!-- P7 專題成果 -->
+    <div class="page">
+        <div class="sec-header">
+        <div class="sec-num">05 · CAPSTONE PROJECT</div>
+        <div class="sec-title">專題成果</div>
+        </div>
+        <div class="sec-body">
+        <div class="works-grid">
+            <div class="work-card"><div class="work-text" style="color:#bbb;">作品一</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+            <div class="work-card"><div class="work-text" style="color:#bbb;">作品二</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+            <div class="work-card"><div class="work-text" style="color:#bbb;">作品三</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+            <div class="work-card"><div class="work-text" style="color:#bbb;">作品四</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+        </div>
+        <div class="field-block" style="margin-top:6px;">
+            <div class="sec-accent"></div>
+            <div class="field-content">
+            <div class="field-label">作品說明格式</div>
+            <div class="field-body">
+                <div class="field-line" style="color:#aaa;font-size:11px;">每件作品建議包含：</div>
+                <div class="field-line" style="color:#aaa;font-size:11px;">・作品名稱 / 完成年份</div>
+                <div class="field-line" style="color:#aaa;font-size:11px;">・使用工具與技術</div>
+                <div class="field-line" style="color:#aaa;font-size:11px;">・創作概念說明（50 字以內）</div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="footer-bar"></div>
+    </div>
+
+  <!-- P7 作品集 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">06 · PORTFOLIO</div>
+      <div class="sec-title">作品集</div>
+    </div>
+    <div class="sec-body">
+      <div class="works-grid">
+        <div class="work-card"><div class="work-text" style="color:#bbb;">作品一</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+        <div class="work-card"><div class="work-text" style="color:#bbb;">作品二</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+        <div class="work-card"><div class="work-text" style="color:#bbb;">作品三</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+        <div class="work-card"><div class="work-text" style="color:#bbb;">作品四</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+      </div>
+      <div class="field-block" style="margin-top:6px;">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">作品說明格式</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#aaa;font-size:11px;">每件作品建議包含：</div>
+            <div class="field-line" style="color:#aaa;font-size:11px;">・作品名稱 / 完成年份</div>
+            <div class="field-line" style="color:#aaa;font-size:11px;">・使用工具與技術</div>
+            <div class="field-line" style="color:#aaa;font-size:11px;">・創作概念說明（50 字以內）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+  <!-- P8 活動幹部 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">07 · ACTIVITIES &amp; LEADERSHIP</div>
+      <div class="sec-title">活動 · 幹部證明</div>
+    </div>
+    <div class="sec-body">
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">幹部職務</div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">○○社 社長（附社團幹部證明）</div><div class="cert-date">20XX</div></div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">系學會 活動組長</div><div class="cert-date">20XX</div></div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">（其他幹部職務）</div><div class="cert-date">——</div></div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">活動參與</div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">○○志工服務（附服務時數證明）</div><div class="cert-date">20XX</div></div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">○○校外交流活動</div><div class="cert-date">20XX</div></div>
+          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">（其他活動）</div><div class="cert-date">——</div></div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">備註</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#aaa;font-size:11px;">相關證明文件影本請附於本頁之後，依清單順序排列</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+  <!-- P9 未來展望 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">08 · FUTURE GOALS</div>
+      <div class="sec-title">未來展望</div>
+    </div>
+    <div class="sec-body">
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">短期目標（在學期間）</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#aaa;font-size:11px;">（希望在二技期間完成的學習目標、研究方向或實習規劃，約 100 字）</div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">中期目標（畢業後 3 年）</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#aaa;font-size:11px;">（職涯方向、期望進入的產業或職位，約 100 字）</div>
+          </div>
+        </div>
+      </div>
+      <div class="field-block">
+        <div class="sec-accent"></div>
+        <div class="field-content">
+          <div class="field-label">長期願景</div>
+          <div class="field-body">
+            <div class="field-line" style="color:#aaa;font-size:11px;">（對社會或專業領域的貢獻、持續進修規劃，約 100 字）</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:auto;">
+        <div style="text-align:center;padding:16px 0 4px;">
+          <div style="font-size:10px;color:#ccc;letter-spacing:2px;">— END OF APPLICATION —</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar"></div>
+  </div>
+
+</div>
+</body>
+</html>
