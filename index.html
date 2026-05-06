@@ -103,7 +103,7 @@
   .cert-name { font-size: 13px; color: var(--navy); flex: 1; }
   .cert-date { font-size: 11px; color: #bbb; }
   .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .work-card { background: rgba(26,39,68,0.05); border-radius: 6px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
+  .work-card { background: rgba(26,39,68,0.05); border-radius: 6px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
   .work-text { font-size: 12px; color: #aaa; }
 
   /* ── Print styles ── */
@@ -358,7 +358,7 @@
           <div class="field-label">與本系所特色的連結</div>
           <div class="field-body">
             <div class="field-line" style="color:#7a6262;font-size:10px;">
-                本系以資訊系統、雲端網路與多媒體為發展主軸，並透過專題製作、企業實習及證照制度強化實務能力。<br>
+                貴系以資訊系統、雲端網路與多媒體為發展主軸，並透過專題製作、企業實習及證照制度強化實務能力。<br>
                 此外，設有多間實驗室，提供學生完整實作環境。這與我目前進行系統開發的學習方向一致，我期望在貴系持續深化實務能力並接軌產業需求。
             </div>
           </div>
@@ -404,21 +404,24 @@
         <div class="sec-title">專題成果</div>
         </div>
         <div class="sec-body">
-        <div class="works-grid">
-            <div class="work-card"><div class="work-text" style="color:#bbb;">作品一</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
-            <div class="work-card"><div class="work-text" style="color:#bbb;">作品二</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
-            <div class="work-card"><div class="work-text" style="color:#bbb;">作品三</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
-            <div class="work-card"><div class="work-text" style="color:#bbb;">作品四</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
+        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="work-card" style="overflow:hidden; height: 150px;"><img src="專題照片1.JPG" alt="專題照片1" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+            <div class="work-card" style="overflow:hidden; height: 150px;"><img src="專題照片2.JPG" alt="專題照片2" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
         </div>
         <div class="field-block" style="margin-top:6px;">
             <div class="sec-accent"></div>
             <div class="field-content">
-            <div class="field-label">作品說明格式</div>
+            <div class="field-label">專題作品說明、介紹與心得</div>
             <div class="field-body">
-                <div class="field-line" style="color:#aaa;font-size:11px;">每件作品建議包含：</div>
-                <div class="field-line" style="color:#aaa;font-size:11px;">・作品名稱 / 完成年份</div>
-                <div class="field-line" style="color:#aaa;font-size:11px;">・使用工具與技術</div>
-                <div class="field-line" style="color:#aaa;font-size:11px;">・創作概念說明（50 字以內）</div>
+                <div class="field-line" style="color:#7a6262;font-size:10px;">
+                    畢業專題以建置一套「線上題庫管理與測驗系統」為目標，採用 FastAPI 作為後端框架，搭配 MySQL 資料庫與 HTML、JavaScript 前端技術進行開發。<br>
+                    系統已完成題庫管理、題目分類、線上作答、自動批改及答題紀錄分析等核心功能，並可透過 API 串接實現資料動態更新。<br>
+                    在實作過程中，我負責<b>系統架構設計、專案任務分配與後端 API 開發</b>，包含題目資料的 CRUD 操作、答題紀錄儲存與分析功能，<br>
+                    並優化前後端資料傳遞流程，使系統具備良好的擴充性與維護性。此外，亦設計答題回顧介面，透過視覺化方式呈現作答結果，提升學習效率。<br>
+                    本系統目前已完成多個單元題庫建置，並能穩定運作，具備實際應用於教學輔助與自主學習之價值。<br>
+                    <b>透過本專題，我不僅強化了全端開發能力，也培養了解決問題與系統整合的實務經驗。</b>
+
+                </div>
             </div>
             </div>
         </div>
@@ -433,25 +436,58 @@
       <div class="sec-title">作品集</div>
     </div>
     <div class="sec-body">
-      <div class="works-grid">
-        <div class="work-card"><div class="work-text" style="color:#bbb;">作品一</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
-        <div class="work-card"><div class="work-text" style="color:#bbb;">作品二</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
-        <div class="work-card"><div class="work-text" style="color:#bbb;">作品三</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
-        <div class="work-card"><div class="work-text" style="color:#bbb;">作品四</div><div style="font-size:10px;color:#bbb;padding:0 10px;text-align:center;">專案名稱 · 說明</div></div>
-      </div>
-      <div class="field-block" style="margin-top:6px;">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">作品說明格式</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#aaa;font-size:11px;">每件作品建議包含：</div>
-            <div class="field-line" style="color:#aaa;font-size:11px;">・作品名稱 / 完成年份</div>
-            <div class="field-line" style="color:#aaa;font-size:11px;">・使用工具與技術</div>
-            <div class="field-line" style="color:#aaa;font-size:11px;">・創作概念說明（50 字以內）</div>
-          </div>
+        <div style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">臺中科技大學校園場地租借系統-ezBorrow</div>
+        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="work-card" style="overflow:hidden; height: 100%;"><img src="/ezBorrow截圖.png" alt="ezBorrow" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
         </div>
-      </div>
+        <div class="field-block" style="margin-top:6px;">
+            <div class="sec-accent"></div>
+            <div class="field-content">
+            <div class="field-label">作品說明、介紹與心得</div>
+            <div class="field-body">
+                <div class="field-line" style="color:#7a6262;font-size:10px;">
+                    ezBorrow 為一套場地租借管理系統，旨在解決校園場地借用流程繁瑣與資訊不透明的問題。<br>
+                    系統採用 FastAPI 與 MySQL 建構後端及資料庫，並結合 LINE Bot 提供借用狀態通知，如審核結果與使用回報提醒。<br>
+                    用戶端功能包含場地管理、借用申請、時段衝突判斷與紀錄查詢，管理員端功能更包含了線上設定各場地資訊（開放借用時段、場地可用性等），
+                    並透過 API 實現資料同步。<br>
+                    開發過程中，我負責<b>網頁後端開發與資料庫設計</b>，並整合 LINE Bot 與 Web 技術。<br>
+                    透過解決時段判斷與資料處理等問題，提升系統穩定性與效能。<br>
+                    <b>在這次專案中讓我強化系統開發與整合能力，並深化對使用者需求的理解。</b>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    <div class="footer-bar"></div>
+  </div>
+
+  <!-- P7 作品集 -->
+  <div class="page">
+    <div class="sec-header">
+      <div class="sec-num">06 · PORTFOLIO</div>
+      <div class="sec-title">作品集</div>
     </div>
+    <div class="sec-body">
+        <div style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">365存錢紀錄網</div>
+        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="work-card" style="overflow:hidden; height: 100%;"><img src="/365截圖.png" alt="ezBorrow" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        </div>
+        <div class="field-block" style="margin-top:6px;">
+            <div class="sec-accent"></div>
+            <div class="field-content">
+            <div class="field-label">作品說明、介紹與心得</div>
+            <div class="field-body">
+                <div class="field-line" style="color:#7a6262;font-size:10px;">
+                    365存錢網為我因實際儲蓄需求所開發之系統。由於市面上缺乏能支援隨機產生 1~365 不重複數字、並即時顯示存錢狀態與進度的工具，因此我自行設計並實作此平台。<br>
+                    系統採用 FastAPI 與 MySQL 建構，能記錄每日存入金額與日期，並透過表格呈現完成狀態，結合進度條比較預期與實際儲蓄進度。<br>
+                    本專題<b>由我獨立完成全端開發</b>，包含隨機演算法設計、資料庫規劃與前端互動呈現。最終結果也成功持續存完365天<br>
+                    透過本次實作，<b>我強化了系統設計與資料處理能力，並學習從使用者需求出發，開發具實用性的應用系統</b>。
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
     <div class="footer-bar"></div>
   </div>
 
