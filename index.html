@@ -1,651 +1,1160 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>二技書審資料-中科</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --navy: #1a2744;
-    --navy-mid: #2d3f6b;
-    --gold: #c9a84c;
-    --gold-light: #e8d5a3;
-    --cream: #f8f5ee;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: #e8e8e8;
-    padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-  }
-  h1.doc-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 18px;
-    color: #444;
-    letter-spacing: 2px;
-    font-weight: 400;
-  }
-  .pages-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 32px;
-    width: 100%;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二技書審資料-中科</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a2744;
+            --navy-mid: #2d3f6b;
+            --gold: #c9a84c;
+            --gold-light: #e8d5a3;
+            --cream: #f8f5ee;
+        }
 
-  /* Each page: 9:16 ratio, A4-ish width */
-  .page {
-    width: 420px;
-    height: 747px;
-    background: var(--cream);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    page-break-after: always;
-  }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  /* ── Cover ── */
-  .cover { background: var(--navy); color: #fff; }
-  .cover-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 48px 40px; text-align: center; }
-  .cover-bar { width: 48px; height: 3px; background: var(--gold); margin-bottom: 36px; }
-  .cover-tag { font-size: 11px; letter-spacing: 4px; color: var(--gold-light); margin-bottom: 16px; font-weight: 300; }
-  .cover-title { font-family: 'Noto Serif TC', serif; font-size: 36px; font-weight: 700; line-height: 1.4; color: #fff; margin-bottom: 8px; }
-  .cover-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 44px; letter-spacing: 2px; }
-  .cover-divider { width: 1px; height: 64px; background: var(--gold); opacity: 0.5; margin: 0 auto 36px; }
-  .cover-dept { font-size: 15px; color: rgba(255,255,255,0.75); line-height: 2.2; }
-  .cover-dept span { color: var(--gold); font-weight: 500; }
-  .cover-corner { position: absolute; bottom: 0; right: 0; width: 140px; height: 140px; opacity: 0.06; }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: #e8e8e8;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
 
-  /* ── Footer bar ── */
-  .footer-bar { height: 3px; background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%); margin-top: auto; flex-shrink: 0; }
+        h1.doc-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 18px;
+            color: #444;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
 
-  /* ── TOC ── */
-  .toc-header { background: var(--navy); padding: 32px 32px 24px; color: #fff; flex-shrink: 0; }
-  .toc-label { font-size: 10px; letter-spacing: 4px; color: var(--gold-light); margin-bottom: 6px; }
-  .toc-h { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; }
-  .toc-body { padding: 24px 28px; flex: 1; overflow: hidden; }
-  .toc-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid rgba(26,39,68,0.12); }
-  .toc-num { font-size: 10px; font-weight: 700; color: var(--gold); width: 22px; padding-top: 2px; flex-shrink: 0; }
-  .toc-text { flex: 1; }
-  .toc-name { font-size: 14px; font-weight: 500; color: var(--navy); }
-  .toc-sub { font-size: 11px; color: #999; margin-top: 3px; line-height: 1.6; }
-  .toc-pg { font-size: 11px; color: #bbb; margin-left: auto; flex-shrink: 0; padding-top: 2px; }
+        .pages-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            width: 100%;
+        }
 
-  /* ── Section pages ── */
-  .sec-header { padding: 28px 32px 20px; border-bottom: 0.5px solid rgba(26,39,68,0.12); flex-shrink: 0; }
-  .sec-num { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 3px; margin-bottom: 4px; }
-  .sec-title { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
-  .sec-body { padding: 20px 28px; flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
-  .sec-accent { width: 3px; background: var(--gold); border-radius: 2px; flex-shrink: 0; }
-  .field-block { display: flex; gap: 12px; }
-  .field-content { flex: 1; min-width: 0; }
-  .field-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--gold); margin-bottom: 7px; }
-  .field-body { background: rgba(26,39,68,0.04); border-radius: 6px; padding: 10px 14px; }
-  .field-line { font-size: 13px; color: #555; line-height: 1.9; }
-  .field-blank { height: 1px; background: rgba(26,39,68,0.1); margin: 5px 0; }
-  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-  .tag { font-size: 11px; padding: 4px 10px; border-radius: 12px; background: rgba(26,39,68,0.07); color: var(--navy-mid); }
-  .info-row { display: flex; gap: 8px; margin-top: 4px; }
-  .info-box { flex: 1; background: rgba(26,39,68,0.04); border-radius: 6px; padding: 9px 12px; }
-  .info-box-label { font-size: 10px; color: #aaa; margin-bottom: 3px; }
-  .info-box-val { font-size: 13px; font-weight: 500; color: var(--navy); }
-  .cert-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid rgba(26,39,68,0.08); }
-  .cert-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
-  .cert-name { font-size: 13px; color: var(--navy); flex: 1; }
-  .cert-date { font-size: 11px; color: #bbb; }
-  .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .work-card { background: rgba(26,39,68,0.05); border-radius: 6px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; }
-  .work-text { font-size: 12px; color: #aaa; }
+        /* Each page: 9:16 ratio, A4-ish width */
+        .page {
+            width: 420px;
+            height: 747px;
+            background: var(--cream);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+        }
 
-  /* ── Print styles ── */
-  @media print {
-    @page {
-      size: A4;
-      margin: 0;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #e8e8e8 !important;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-    body { 
-      padding-top: 40px !important;
-    }
-    .doc-title { display: none; }
-    .pages-wrap { 
-      display: block !important;
-      width: 100% !important;
-    }
-    .page { 
-      width: 420px !important; 
-      height: 747px !important; 
-      background: var(--cream) !important;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.18) !important;
-      border-radius: 4px !important;
-      margin: 0 auto !important; /* 移除所有頁面的上下 margin */
-      display: flex !important;
-      flex-direction: column !important;
-      overflow: hidden;
-      position: relative !important;
-      
-      /* 強制分頁關鍵設定 */
-      page-break-after: always !important;
-      break-after: page !important;
-      page-break-inside: avoid !important;
-      
-      /* 確保圓角在列印時生效 */
-      border: 1px solid rgba(0,0,0,0.01) !important;
-    }
-    .page.cover {
-      background: var(--navy) !important;
-      justify-content: center;
-      margin-top: 0 !important;
-    }
-    body { 
-      padding-top: 0 !important;
-    }
-    .footer-bar {
-      margin-top: auto !important;
-      flex-shrink: 0 !important;
-    }
-  }
-</style>
+        /* ── Cover ── */
+        .cover {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .cover-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 48px 40px;
+            text-align: center;
+        }
+
+        .cover-bar {
+            width: 48px;
+            height: 3px;
+            background: var(--gold);
+            margin-bottom: 36px;
+        }
+
+        .cover-tag {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--gold-light);
+            margin-bottom: 16px;
+            font-weight: 300;
+        }
+
+        .cover-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .cover-sub {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 44px;
+            letter-spacing: 2px;
+        }
+
+        .cover-divider {
+            width: 1px;
+            height: 64px;
+            background: var(--gold);
+            opacity: 0.5;
+            margin: 0 auto 36px;
+        }
+
+        .cover-dept {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 2.2;
+        }
+
+        .cover-dept span {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .cover-corner {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 140px;
+            height: 140px;
+            opacity: 0.06;
+        }
+
+        /* ── Footer bar ── */
+        .footer-bar {
+            height: 3px;
+            background: linear-gradient(90deg, var(--navy) 0%, var(--gold) 100%);
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        /* ── TOC ── */
+        .toc-header {
+            background: var(--navy);
+            padding: 32px 32px 24px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .toc-label {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--gold-light);
+            margin-bottom: 6px;
+        }
+
+        .toc-h {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .toc-body {
+            padding: 24px 28px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 0.5px solid rgba(26, 39, 68, 0.12);
+        }
+
+        .toc-num {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gold);
+            width: 22px;
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .toc-text {
+            flex: 1;
+        }
+
+        .toc-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--navy);
+        }
+
+        .toc-sub {
+            font-size: 11px;
+            color: #999;
+            margin-top: 3px;
+            line-height: 1.6;
+        }
+
+        .toc-pg {
+            font-size: 11px;
+            color: #bbb;
+            margin-left: auto;
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+
+        /* ── Section pages ── */
+        .sec-header {
+            padding: 28px 32px 20px;
+            border-bottom: 0.5px solid rgba(26, 39, 68, 0.12);
+            flex-shrink: 0;
+        }
+
+        .sec-num {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+        }
+
+        .sec-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .sec-body {
+            padding: 20px 28px;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .sec-accent {
+            width: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .field-block {
+            display: flex;
+            gap: 12px;
+        }
+
+        .field-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .field-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 7px;
+        }
+
+        .field-body {
+            background: rgba(26, 39, 68, 0.04);
+            border-radius: 6px;
+            padding: 10px 14px;
+        }
+
+        .field-line {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.9;
+        }
+
+        .field-blank {
+            height: 1px;
+            background: rgba(26, 39, 68, 0.1);
+            margin: 5px 0;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(26, 39, 68, 0.07);
+            color: var(--navy-mid);
+        }
+
+        .info-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .info-box {
+            flex: 1;
+            background: rgba(26, 39, 68, 0.04);
+            border-radius: 6px;
+            padding: 9px 12px;
+        }
+
+        .info-box-label {
+            font-size: 10px;
+            color: #aaa;
+            margin-bottom: 3px;
+        }
+
+        .info-box-val {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--navy);
+        }
+
+        .cert-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 0.5px solid rgba(26, 39, 68, 0.08);
+        }
+
+        .cert-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .cert-name {
+            font-size: 13px;
+            color: var(--navy);
+            flex: 1;
+        }
+
+        .cert-date {
+            font-size: 11px;
+            color: #bbb;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .work-card {
+            background: rgba(26, 39, 68, 0.05);
+            border-radius: 6px;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .work-text {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* ── Print styles ── */
+        /* 頁碼樣式 */
+        .page-number {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            font-size: 12px;
+            color: var(--navy);
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 500;
+        }
+
+        @media print {
+            .page-number {
+                bottom: 25px;
+                /* 調整列印時的位置 */
+                right: 35px;
+            }
+
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: #e8e8e8 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body {
+                padding-top: 40px !important;
+            }
+
+            .doc-title {
+                display: none;
+            }
+
+            .pages-wrap {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .page {
+                width: 420px !important;
+                height: 747px !important;
+                background: var(--cream) !important;
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18) !important;
+                border-radius: 4px !important;
+                margin: 0 auto !important;
+                /* 移除所有頁面的上下 margin */
+                display: flex !important;
+                flex-direction: column !important;
+                overflow: hidden;
+                position: relative !important;
+
+                /* 強制分頁關鍵設定 */
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+
+                /* 確保圓角在列印時生效 */
+                border: 1px solid rgba(0, 0, 0, 0.01) !important;
+            }
+
+            .page.cover {
+                background: var(--navy) !important;
+                justify-content: center;
+                margin-top: 0 !important;
+            }
+
+            body {
+                padding-top: 0 !important;
+            }
+
+            .footer-bar {
+                margin-top: auto !important;
+                flex-shrink: 0 !important;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<h1 class="doc-title">二技書審資料-中科</h1>
+    <h1 class="doc-title">二技書審資料-中科</h1>
 
-<div class="pages-wrap">
+    <div class="pages-wrap">
 
-  <!-- P1 封面 -->
-  <div class="page cover">
-    <div class="cover-inner">
-      <div class="cover-bar"></div>
-      <div class="cover-tag">BACHELOR PROGRAM APPLICATION</div>
-      <div class="cover-title">書審<br>資料</div>
-      <div class="cover-sub">二年制技術校院</div>
-      <img src="中科大Logo.png" alt="臺中科技大學Logo" style="display:block;margin:0 auto;opacity:0.5;width: 240px;height: 240px;margin-bottom: 44px;">
-      <div class="cover-dept">
-        申請系所：<span>國立臺中科技大學 資訊管理系</span><br>
-        申請人：<span>卓 家 睿</span><br>
-      </div>
-    </div>
-    <svg class="cover-corner" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="140" cy="140" r="120" fill="none" stroke="#fff" stroke-width="1"/>
-      <circle cx="140" cy="140" r="85" fill="none" stroke="#fff" stroke-width="0.5"/>
-      <circle cx="140" cy="140" r="50" fill="none" stroke="#fff" stroke-width="0.5"/>
-    </svg>
-    <div class="footer-bar"></div>
-  </div>
-
-  <!-- P2 目錄 -->
-  <div class="page">
-    <div class="toc-header">
-      <div class="toc-label">TABLE OF CONTENTS</div>
-      <div class="toc-h">目 錄</div>
-    </div>
-    <div class="toc-body">
-      <div class="toc-item"><div class="toc-num">01</div><div class="toc-text"><div class="toc-name">學歷 · 成績證明</div></div><div class="toc-pg">P.3</div></div>
-      <div class="toc-item"><div class="toc-num">02</div><div class="toc-text"><div class="toc-name">履歷自傳</div><div class="toc-sub">幹部經歷 · 社團經歷 · 競賽經歷 · 活動經歷<br>工讀經歷 · 家庭背景 · 求學歷程 · 各項心得</div></div><div class="toc-pg">P.4-5</div></div>
-      <div class="toc-item"><div class="toc-num">03</div><div class="toc-text"><div class="toc-name">申請動機</div></div><div class="toc-pg">P.6</div></div>
-      <div class="toc-item"><div class="toc-num">04</div><div class="toc-text"><div class="toc-name">校內外證照</div></div><div class="toc-pg">P.7</div></div>
-      <div class="toc-item"><div class="toc-num">05</div><div class="toc-text"><div class="toc-name">專題成果</div></div><div class="toc-pg">P.8</div></div>
-      <div class="toc-item"><div class="toc-num">06</div><div class="toc-text"><div class="toc-name">作品集</div></div><div class="toc-pg">P.9</div></div>
-      <div class="toc-item"><div class="toc-num">07</div><div class="toc-text"><div class="toc-name">活動 · 幹部證明</div></div><div class="toc-pg">P.10</div></div>
-      <div class="toc-item"><div class="toc-num">08</div><div class="toc-text"><div class="toc-name">未來展望</div></div><div class="toc-pg">P.11</div></div>
-      <div class="toc-item"><div class="toc-num">09</div><div class="toc-text"><div class="toc-name">附件</div></div><div class="toc-pg">P.12</div></div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
-
-  <!-- P3 學歷成績 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">01 · EDUCATION</div>
-      <div class="sec-title">學歷 · 成績證明</div>
-    </div>
-    <div class="sec-body">
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">就讀學校</div>
-          <div class="field-body">
-            <div class="field-line">國立臺中科技大學 / 資訊與流通學院</div>
-            <div class="field-line">資訊工程科</div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">在學年份</div>
-          <div class="info-row">
-            <div class="info-box"><div class="info-box-label">入學</div><div class="info-box-val">2021 年 9 月</div></div>
-            <div class="info-box"><div class="info-box-label">畢業</div><div class="info-box-val">2026 年 6 月</div></div>
-            <div class="info-box"><div class="info-box-label">修業</div><div class="info-box-val">五年</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">歷年平均成績</div>
-          <div class="info-row">
-            <div class="info-box"><div class="info-box-label">總平均（截止至五年級上學期）</div><div class="info-box-val">78.28 分</div></div>
-            <div class="info-box"><div class="info-box-label">系排名</div><div class="info-box-val">名次 27/88 (前 31 %)</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">附件說明</div>
-          <div class="field-body">
-            <div class="field-line">☑ 畢業證書（或應屆在學證明）- <b>附件1</b></div>
-            <div class="field-blank"></div>
-            <div class="field-line">☑ 歷年成績單（需加蓋學校印信）- <b>附件2</b></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
-
-  <!-- P4 履歷自傳 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">02 · BIOGRAPHY</div>
-      <div class="sec-title">履歷自傳</div>
-    </div>
-    <div class="sec-body">
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">幹部 · 社團經歷</div>
-          <div class="field-body">
-            <div class="field-line">112/07/01 ~ 113/06/30 資訊工程科學會-副會長</div>
-            <div class="field-blank"></div>
-            <div class="field-line">111/02/01 ~ 111/07/31 服務股長</div>
-            <div class="field-blank"></div>
-            <div class="field-line">111/08/01 ~ 112/07/31 班代表</div>
-            <div class="field-blank"></div>
-            <div class="field-line">113/02/01 ~ 113/07/31 事務股長</div>
-            <div class="field-blank"></div>
-            <div class="field-line">114/08/01 ~ 115/07/31 班代表</div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">競賽 · 活動經歷</div>
-          <div class="tag-row">
-            <span class="tag">資訊工程科迎新大露營 - 副召兼小隊輔組長</span>
-            <span class="tag">台積電產學合作課程 - LIT|CMP機台基礎16小時</span>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">工讀經歷</div>
-          <div class="field-body">
-            <div class="field-line">台中市私立傑英英語會話短期補習班 · 英文助教</div>
-            <div class="field-line" style="color:#aaa;font-size:11px;">2022.10 — 2023.11</div>
-          </div>
-          <div class="field-body" style="margin-top: 10px;">
-            <div class="field-line">湯姆熊育樂事業股份有限公司 · 工讀生</div>
-            <div class="field-line" style="color:#aaa;font-size:11px;">2024.07 — 迄今</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
-  
-  <!-- P4-1 履歷自傳 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">02 · BIOGRAPHY</div>
-      <div class="sec-title">履歷自傳</div>
-    </div>
-    <div class="sec-body">
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">家庭背景 · 求學歷程</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#7a6262;font-size:10px;">
-                我成長於一個支持我學習與探索的家庭，家人鼓勵我培養專長並持續精進自己，使我養成自律與主動學習的習慣。<br>
-                在求學過程中，我對資訊科技產生濃厚興趣，並開始接觸程式開發。<br>
-                從最初學習基礎語法，到後續使用網頁套件進行系統的後端開發，<br>
-                我逐步累積實作經驗。在開發的過程中，我不僅提升了程式能力，也學會系統設計與問題分析。<br>
-                這些經驗讓我更加確立未來朝軟體開發領域發展的方向。
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">社團 · 工讀心得</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#7a6262;font-size:10px;">
-                在五專三年級的時候，我加入了資訊工程科學會，並成為了副會長。
-                在我任內，我與會長以及其他幹部們共同舉辦了許多活動，在舉辦這些活動當中，我學到了如何與人有效率的溝通、如何以領導者的角色分配任務
-                並確保活動順利進行。這些經驗讓我在組織協調與團隊合作方面有了很大的成長。
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
-
-
-  <!-- P5 申請動機 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">03 · MOTIVATION</div>
-      <div class="sec-title">申請動機</div>
-    </div>
-    <div class="sec-body">
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">選擇本系所動機</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#7a6262;font-size:10px;">
-                我選擇就讀貴系，主要是因其結合「資訊技術」與「商業管理」的跨領域特色，能培養完整的系統開發與應用能力。<br>
-                貴系以資訊系統、雲端網路與多媒體為核心，並強調專題實作與產業實習，使學生具備實務應用能力。<br>
-                我本身對程式開發與系統設計具有高度興趣，期望透過本系課程深化技術基礎，並學習如何將資訊系統應用於企業與實務場域，
-                因此故選擇報考貴系。
-</div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">學習目標</div>
-          <div class="tag-row">
-            <span class="tag">深化專業知識</span>
-            <span class="tag">跨域整合能力</span>
-            <span class="tag">產學接軌</span>
-            <span class="tag">提升實務開發經驗</span>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">為何適合本系所</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#7a6262;font-size:10px;">
-                我具備資訊相關實作經驗，目前已開發中科大場租系統並持續維護中。<br>
-                此經驗使我熟悉系統開發流程與資料處理邏輯，亦培養問題解決能力。<br>
-                此外，我持續自主學習程式技術，對於資訊系統開發具有高度熱忱。<br>
-                貴系強調程式設計、資料庫與系統分析等核心能力，與我的學習方向高度契合，因此我具備良好的基礎與動機，適合就讀貴系。
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">與本系所特色的連結</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#7a6262;font-size:10px;">
-                貴系以資訊系統、雲端網路與多媒體為發展主軸，並透過專題製作、企業實習及證照制度強化實務能力。<br>
-                此外，設有多間實驗室，提供學生完整實作環境。這與我目前進行系統開發的學習方向一致，我期望在貴系持續深化實務能力並接軌產業需求。
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
-
-  <!-- P6 競賽證照 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">04 · CERTIFICATIONS</div>
-      <div class="sec-title">校內外證照</div>
-    </div>
-    <div class="sec-body">
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">專業證照</div>
-          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">PVQC科技英文-專家級（Tier Five）</div><div class="cert-date">2021.12</div></div>
-          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">多益TOEIC-金色證書（905分）</div><div class="cert-date">2023.07</div></div>
-          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">TQC+專業設計人才認證-Python3</div><div class="cert-date">2025.03</div></div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">備註</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#aaa;font-size:11px;">相關證書影本將附於本頁之後，並依上方清單順序排列</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
-
-    <!-- P7 專題成果 -->
-    <div class="page">
-        <div class="sec-header">
-        <div class="sec-num">05 · CAPSTONE PROJECT</div>
-        <div class="sec-title">專題成果</div>
-        </div>
-        <div class="sec-body">
-        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="work-card" style="overflow:hidden; height: 140px;"><img src="專題照片1.JPG" alt="專題照片1" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-            <div class="work-card" style="overflow:hidden; height: 140px;"><img src="專題照片2.JPG" alt="專題照片2" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-        </div>
-        <div class="field-block" style="margin-top:6px;">
-            <div class="sec-accent"></div>
-            <div class="field-content">
-            <div class="field-label">專題作品說明、介紹與心得</div>
-            <div class="field-body">
-                <div class="field-line" style="color:#7a6262;font-size:10px;">
-                    畢業專題以建置一套「線上題庫管理與測驗系統」為目標，採用 FastAPI 作為後端框架，搭配 MySQL 資料庫與 HTML、JavaScript 前端技術進行開發。<br>
-                    系統已完成題庫管理、題目分類、線上作答、自動批改及答題紀錄分析等核心功能，並可透過 API 串接實現資料動態更新。<br>
-                    在實作過程中，我負責<b>系統架構設計、專案任務分配與後端 API 開發</b>，包含題目資料的 CRUD 操作、答題紀錄儲存與分析功能，<br>
-                    並優化前後端資料傳遞流程，使系統具備良好的擴充性與維護性。此外，亦設計答題回顧介面，透過視覺化方式呈現作答結果，提升學習效率。<br>
-                    本系統目前已完成多個單元題庫建置，並能穩定運作，具備實際應用於教學輔助與自主學習之價值。<br>
-                    <b>透過本專題，我不僅強化了全端開發能力，也培養了解決問題與系統整合的實務經驗。</b>
-
+        <!-- P1 封面 -->
+        <div class="page cover">
+            <div class="cover-inner">
+                <div class="cover-bar"></div>
+                <div class="cover-tag">BACHELOR PROGRAM APPLICATION</div>
+                <div class="cover-title">書審<br>資料</div>
+                <div class="cover-sub">二年制技術校院</div>
+                <img src="中科大Logo.png" alt="臺中科技大學Logo"
+                    style="display:block;margin:0 auto;opacity:0.5;width: 120px;height: 120px;margin-bottom: 44px;">
+                <div class="cover-dept">
+                    申請系所：<span>國立臺中科技大學 資訊管理系</span><br>
+                    申請人：<span>卓 家 睿</span><br>
                 </div>
             </div>
+            <svg class="cover-corner" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="140" cy="140" r="120" fill="none" stroke="#fff" stroke-width="1" />
+                <circle cx="140" cy="140" r="85" fill="none" stroke="#fff" stroke-width="0.5" />
+                <circle cx="140" cy="140" r="50" fill="none" stroke="#fff" stroke-width="0.5" />
+            </svg>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P2 目錄 -->
+        <div class="page">
+            <div class="toc-header">
+                <div class="toc-label">TABLE OF CONTENTS</div>
+                <div class="toc-h">目 錄</div>
             </div>
-        </div>
-        </div>
-        <div class="footer-bar"></div>
-    </div>
-
-  <!-- P7 作品集 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">06 · PORTFOLIO</div>
-      <div class="sec-title">作品集</div>
-    </div>
-    <div class="sec-body">
-        <div style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">臺中科技大學校園場地租借系統-ezBorrow</div>
-        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="work-card" style="overflow:hidden; height: 100%;"><img src="ezBorrow截圖.png" alt="ezBorrow" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-        </div>
-        <div class="field-block" style="margin-top:6px;">
-            <div class="sec-accent"></div>
-            <div class="field-content">
-            <div class="field-label">作品說明、介紹與心得</div>
-            <div class="field-body">
-                <div class="field-line" style="color:#7a6262;font-size:10px;">
-                    ezBorrow 為一套場地租借管理系統，旨在解決校園場地借用流程繁瑣與資訊不透明的問題。<br>
-                    系統採用 FastAPI 與 MySQL 建構後端及資料庫，並結合 LINE Bot 提供借用狀態通知，如審核結果與使用回報提醒。<br>
-                    用戶端功能包含場地管理、借用申請、時段衝突判斷與紀錄查詢，管理員端功能更包含了線上設定各場地資訊（開放借用時段、場地可用性等），
-                    並透過 API 實現資料同步。<br>
-                    開發過程中，我負責<b>網頁後端開發與資料庫設計</b>，並整合 LINE Bot 與 Web 技術。<br>
-                    透過解決時段判斷與資料處理等問題，提升系統穩定性與效能。<br>
-                    <b>在這次專案中讓我強化系統開發與整合能力，並深化對使用者需求的理解。</b>
-
+            <div class="toc-body">
+                <div class="toc-item">
+                    <div class="toc-num">01</div>
+                    <div class="toc-text">
+                        <div class="toc-name">學歷 · 成績證明</div>
+                    </div>
+                    <div class="toc-pg">P.3</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">02</div>
+                    <div class="toc-text">
+                        <div class="toc-name">履歷自傳</div>
+                        <div class="toc-sub">幹部經歷 · 社團經歷 · 競賽經歷 · 活動經歷<br>工讀經歷 · 家庭背景 · 求學歷程 · 各項心得</div>
+                    </div>
+                    <div class="toc-pg">P.4-5</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">03</div>
+                    <div class="toc-text">
+                        <div class="toc-name">申請動機</div>
+                    </div>
+                    <div class="toc-pg">P.6</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">04</div>
+                    <div class="toc-text">
+                        <div class="toc-name">校內外證照</div>
+                    </div>
+                    <div class="toc-pg">P.7</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">05</div>
+                    <div class="toc-text">
+                        <div class="toc-name">專題成果</div>
+                    </div>
+                    <div class="toc-pg">P.8</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">06</div>
+                    <div class="toc-text">
+                        <div class="toc-name">作品集</div>
+                    </div>
+                    <div class="toc-pg">P.9-10</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">07</div>
+                    <div class="toc-text">
+                        <div class="toc-name">活動 · 幹部證明</div>
+                    </div>
+                    <div class="toc-pg">P.11</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">08</div>
+                    <div class="toc-text">
+                        <div class="toc-name">未來展望</div>
+                    </div>
+                    <div class="toc-pg">P.12</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">09</div>
+                    <div class="toc-text">
+                        <div class="toc-name">附件</div>
+                    </div>
+                    <div class="toc-pg">P.13-16</div>
                 </div>
             </div>
-            </div>
+            <div class="footer-bar"></div>
         </div>
-        </div>
-    <div class="footer-bar"></div>
-  </div>
 
-  <!-- P7 作品集 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">06 · PORTFOLIO</div>
-      <div class="sec-title">作品集</div>
-    </div>
-    <div class="sec-body">
-        <div style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">365存錢紀錄網</div>
-        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="work-card" style="overflow:hidden; height: 100%;"><img src="365截圖.png" alt="ezBorrow" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
-        </div>
-        <div class="field-block" style="margin-top:6px;">
-            <div class="sec-accent"></div>
-            <div class="field-content">
-            <div class="field-label">作品說明、介紹與心得</div>
-            <div class="field-body">
-                <div class="field-line" style="color:#7a6262;font-size:10px;">
-                    365存錢網為我因實際儲蓄需求所開發之系統。由於市面上缺乏能支援隨機產生 1~365 不重複數字、並即時顯示存錢狀態與進度的工具，因此我自行設計並實作此平台。<br>
-                    系統採用 FastAPI 與 MySQL 建構，能記錄每日存入金額與日期，並透過表格呈現完成狀態，結合進度條比較預期與實際儲蓄進度。<br>
-                    本專題<b>由我獨立完成全端開發</b>，包含隨機演算法設計、資料庫規劃與前端互動呈現。最終結果也成功持續存完365天<br>
-                    透過本次實作，<b>我強化了系統設計與資料處理能力，並學習從使用者需求出發，開發具實用性的應用系統</b>。
+        <!-- P3 學歷成績 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">01 · EDUCATION</div>
+                <div class="sec-title">學歷 · 成績證明</div>
+            </div>
+            <div class="sec-body">
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">就讀學校</div>
+                        <div class="field-body">
+                            <div class="field-line">國立臺中科技大學 / 資訊與流通學院</div>
+                            <div class="field-line">資訊工程科</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">在學年份</div>
+                        <div class="info-row">
+                            <div class="info-box">
+                                <div class="info-box-label">入學</div>
+                                <div class="info-box-val">2021 年 9 月</div>
+                            </div>
+                            <div class="info-box">
+                                <div class="info-box-label">畢業</div>
+                                <div class="info-box-val">2026 年 6 月</div>
+                            </div>
+                            <div class="info-box">
+                                <div class="info-box-label">修業</div>
+                                <div class="info-box-val">五年</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">歷年平均成績</div>
+                        <div class="info-row">
+                            <div class="info-box">
+                                <div class="info-box-label">總平均（截止至五年級上學期）</div>
+                                <div class="info-box-val">78.28 分</div>
+                            </div>
+                            <div class="info-box">
+                                <div class="info-box-label">系排名</div>
+                                <div class="info-box-val">名次 27/88 (前 31 %)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">附件說明</div>
+                        <div class="field-body">
+                            <div class="field-line">☑ 畢業證書（或應屆在學證明）- <b>附件一</b></div>
+                            <div class="field-blank"></div>
+                            <div class="field-line">☑ 歷年成績單（需加蓋學校印信）- <b>附件二</b></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
+            <div class="page-number">P.3</div>
+            <div class="footer-bar"></div>
         </div>
-        </div>
-    <div class="footer-bar"></div>
-  </div>
 
-  <!-- P8 活動幹部 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">07 · ACTIVITIES &amp; LEADERSHIP</div>
-      <div class="sec-title">活動 · 幹部證明</div>
-    </div>
-    <div class="sec-body">
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">幹部職務</div>
-          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">第五屆資訊工程科學會副會長（附幹部證明）</div><div class="cert-date">2023</div></div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">活動參與</div>
-          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">資訊工程科迎新大露營</div><div class="cert-date">2023</div></div>
-          <div class="cert-item"><div class="cert-dot"></div><div class="cert-name">台積電LIT|CMP機台基礎16小時</div><div class="cert-date">2026</div></div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">備註</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#aaa;font-size:11px;">相關證明文件影本請附於本頁之後，依清單順序排列</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
-
-  <!-- P9 未來展望 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">08 · FUTURE GOALS</div>
-      <div class="sec-title">未來展望</div>
-    </div>
-    <div class="sec-body">
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">短期目標（在學期間）</div>
-          <div class="field-body">
-              <div class="field-line" style="color:#7a6262;font-size:10px;">
-              進入二技後，我希望持續精進後端開發、資料庫設計與系統整合能力，並深入學習資訊管理以及更多關於商、會計等的相關知識。<br>
-              同時，我也希望參與專題研究或校外實習，累積實務經驗，提升團隊合作與問題解決能力，為未來進入資訊產業做好準備。
+        <!-- P4 履歷自傳 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">02 · BIOGRAPHY</div>
+                <div class="sec-title">履歷自傳</div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">中期目標（畢業後 3 年）</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#7a6262;font-size:10px;">
-              畢業後，我希望能進入軟體開發或資訊系統相關產業，從事後端工程或系統開發工作，持續累積大型系統開發與維護、運作經驗。<br>
-              我期望能將在學期間所培養的技術能力應用於實際專案中，並透過不斷學習新技術，提升自身專業競爭力。
+            <div class="sec-body">
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">幹部 · 社團經歷</div>
+                        <div class="field-body">
+                            <div class="field-line">112/07/01 ~ 113/06/30 資訊工程科學會-副會長</div>
+                            <div class="field-blank"></div>
+                            <div class="field-line">111/02/01 ~ 111/07/31 服務股長</div>
+                            <div class="field-blank"></div>
+                            <div class="field-line">111/08/01 ~ 112/07/31 班代表</div>
+                            <div class="field-blank"></div>
+                            <div class="field-line">113/02/01 ~ 113/07/31 事務股長</div>
+                            <div class="field-blank"></div>
+                            <div class="field-line">114/08/01 ~ 115/07/31 班代表</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">競賽 · 活動經歷</div>
+                        <div class="tag-row">
+                            <span class="tag">資訊工程科迎新大露營 - 副召兼小隊輔組長</span>
+                            <span class="tag">台積電產學合作課程 - LIT|CMP機台基礎16小時</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">工讀經歷</div>
+                        <div class="field-body">
+                            <div class="field-line">台中市私立傑英英語會話短期補習班 · 英文助教</div>
+                            <div class="field-line" style="color:#aaa;font-size:11px;">2022.10 — 2023.11</div>
+                        </div>
+                        <div class="field-body" style="margin-top: 10px;">
+                            <div class="field-line">湯姆熊育樂事業股份有限公司 · 工讀生</div>
+                            <div class="field-line" style="color:#aaa;font-size:11px;">2024.07 — 迄今</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="page-number">P.4</div>
+            <div class="footer-bar"></div>
         </div>
-      </div>
-      <div class="field-block">
-        <div class="sec-accent"></div>
-        <div class="field-content">
-          <div class="field-label">長期願景</div>
-          <div class="field-body">
-            <div class="field-line" style="color:#7a6262;font-size:10px;">
-              未來我希望成為具備系統規劃與整合能力的資訊人才，開發能真正解決使用者需求的系統與服務，提升生活便利性與資訊化效率。<br>
-              同時，我也希望持續進修與學習新技術，關注人工智慧與智慧應用等領域發展，並將所學應用於實務，為資訊產業與社會帶來正向價值。
+
+        <!-- P5 履歷自傳 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">02 · BIOGRAPHY</div>
+                <div class="sec-title">履歷自傳</div>
             </div>
-          </div>
+            <div class="sec-body">
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">家庭背景 · 求學歷程</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:13px;">
+                                我成長在一個願意支持我學習與探索的家庭，家人鼓勵我培養專長並持續精進自己，使我養成自律與主動學習的習慣。<br>
+                                在國中時期，我便對資訊科技產生濃厚興趣，並開始接觸程式開發。<br>
+                                從最初學習基礎語法，到後續進入五專後，使用網頁套件進行系統的後端開發，<br>
+                                我逐步累積實作經驗。在開發的過程中，我不僅<b>提升了程式能力，也學會系統設計與問題分析</b>。<br>
+                                這些經驗讓我更加確立未來朝軟體開發領域發展的方向。<br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">社團 · 工讀心得</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:13px;">
+                                在五專三年級的時候，我加入了資訊工程科學會，並成為了副會長。<br>
+                                在我任內，我與會長以及其他幹部們共同舉辦了許多活動，在舉辦這些活動當中，我學到了如何與人有效率的溝通、如何以領導者的角色分配任務<br>
+                                並確保活動順利進行。這些經驗讓我在<b>組織協調與團隊合作方面有了很大的成長</b>。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.5</div>
+            <div class="footer-bar"></div>
         </div>
-      </div>
-      <div style="margin-top:auto;">
-        <div style="text-align:center;padding:16px 0 4px;">
-          <div style="font-size:10px;color:#ccc;letter-spacing:2px;">— END OF APPLICATION —</div>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bar"></div>
-  </div>
 
-  <!-- P10 附件 -->
-  <div class="page">
-    <div class="sec-header">
-      <div class="sec-num">09 · ATTACHMENT</div>
-      <div class="sec-title">附件</div>
-    </div>
-    <div class="sec-body">
-        <div style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">附件1-1142在學證明</div>
-        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="work-card" style="overflow:hidden; height: 100%;"><img src="附件1-1142在學證明.jpg" alt="1142" style="width:100%;height:100%;object-fit:contain;display:block;"></div>
-        </div>
-        <div style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">附件2-歷年成績單</div>
-        <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
-            <div class="work-card" style="overflow:hidden; height: 100%;"><img src="附件2-歷年成績單.jpg" alt="score" style="width:100%;height:100%;object-fit:contain;display:block;"></div>
-        </div>
-        </div>
-    <div class="footer-bar"></div>
-  </div>
 
-</div>
+        <!-- P6 申請動機 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">03 · MOTIVATION</div>
+                <div class="sec-title">申請動機</div>
+            </div>
+            <div class="sec-body">
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">選擇本系所動機</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:11px;">
+                                我選擇就讀貴系，主要是因其結合「資訊技術」與「商業管理」的跨領域特色，能培養完整的系統開發與應用能力。<br>
+                                貴系以資訊系統、雲端網路與多媒體為核心，並強調專題實作與產業實習，讓學生能夠有實務應用能力。<br>
+                                我本身對程式開發與系統設計具有高度興趣，期望透過貴系的課程深化技術基礎，並學習如何將資訊系統應用於企業與實務場域，
+                                因此故選擇報考貴系。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">學習目標</div>
+                        <div class="tag-row">
+                            <span class="tag">深化專業知識</span>
+                            <span class="tag">跨域整合能力</span>
+                            <span class="tag">產學接軌</span>
+                            <span class="tag">提升實務開發經驗</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">為何適合本系所</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                我具備資訊相關實作經驗，目前已開發中科大場租系統並持續維護中。<br>
+                                此經驗使我<b>熟悉系統開發流程與資料處理邏輯，亦培養問題解決能力</b>。<br>
+                                此外，我持續自主學習程式技術，對於資訊系統開發具有高度熱忱。<br>
+                                貴系強調程式設計、資料庫與系統分析等核心能力，與我的學習方向高度契合，因此我具備良好的基礎與動機，適合就讀貴系。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">與本系所特色的連結</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                貴系以資訊系統、雲端網路與多媒體為發展主軸，並透過專題製作、企業實習及證照制度強化實務能力。<br>
+                                此外，設有多間實驗室，提供學生完整實作環境。這與我目前進行系統開發的學習方向一致，我期望在貴系持續深化實務能力並接軌產業需求。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.6</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P7 競賽證照 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">04 · CERTIFICATIONS</div>
+                <div class="sec-title">校內外證照</div>
+            </div>
+            <div class="sec-body">
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">專業證照</div>
+                        <div class="cert-item">
+                            <div class="cert-dot"></div>
+                            <div class="cert-name">PVQC科技英文-專家級（Tier Five）</div>
+                            <div class="cert-date">2021.12</div>
+                        </div>
+                        <div class="cert-item">
+                            <div class="cert-dot"></div>
+                            <div class="cert-name">多益TOEIC-金色證書（905分）</div>
+                            <div class="cert-date">2023.07</div>
+                        </div>
+                        <div class="cert-item">
+                            <div class="cert-dot"></div>
+                            <div class="cert-name">TQC+專業設計人才認證-Python3</div>
+                            <div class="cert-date">2025.03</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">備註</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:12px;">
+                                相關證書影本將附於最後 附件 頁面，並依上方清單順序排列<br>
+                                附件三：PVQC科技英文-專家級<br>
+                                附件四：多益TOEIC-金色證書<br>
+                                附件五：TQC+專業設計人才認證<br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.7</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P8 專題成果 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">05 · CAPSTONE PROJECT</div>
+                <div class="sec-title">專題成果</div>
+            </div>
+            <div class="sec-body">
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="work-card" style="overflow:hidden; height: 140px;"><img src="專題照片1.JPG" alt="專題照片1"
+                            style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+                    <div class="work-card" style="overflow:hidden; height: 140px;"><img src="專題照片2.JPG" alt="專題照片2"
+                            style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+                </div>
+                <div class="field-block" style="margin-top:6px;">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">專題作品說明、介紹與心得</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                畢業專題以建置一套「線上題庫管理與測驗系統」為目標，採用 FastAPI 作為後端框架，搭配 MySQL 資料庫與 HTML、JavaScript 前端技術進行開發。<br>
+                                系統已完成題庫管理、題目分類、線上作答、自動批改及答題紀錄分析等核心功能，並可透過 API 串接實現資料動態更新。<br>
+                                在實作過程中，我負責<b>系統架構設計、專案任務分配與後端 API 開發</b>，包含題目資料的 CRUD 操作、答題紀錄儲存與分析功能，<br>
+                                並優化前後端資料傳遞流程，使系統具備良好的擴充性與維護性。此外，亦設計答題回顧介面，透過視覺化方式呈現作答結果，提升學習效率。<br>
+                                本系統目前已完成多個單元題庫建置，並能穩定運作，具備實際應用於教學輔助與自主學習之價值。<br>
+                                <b>透過本專題，我不僅強化了全端開發能力，也培養了解決問題與系統整合的實務經驗。</b>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.8</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P9 作品集 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">06 · PORTFOLIO</div>
+                <div class="sec-title">作品集</div>
+            </div>
+            <div class="sec-body">
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    臺中科技大學校園場地租借系統-ezBorrow</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="work-card" style="overflow:hidden; height: 100%;"><img src="ezBorrow截圖.png"
+                            alt="ezBorrow" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+                </div>
+                <div class="field-block" style="margin-top:6px;">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">作品說明、介紹與心得</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                ezBorrow 為一套場地租借管理系統，旨在解決校園場地借用流程繁瑣與資訊不透明的問題。<br>
+                                系統採用 FastAPI 與 MySQL 建構後端及資料庫，並結合 LINE Bot 提供借用狀態通知，如審核結果與使用回報提醒。<br>
+                                用戶端功能包含場地管理、借用申請、時段衝突判斷與紀錄查詢，管理員端功能更包含了線上設定各場地資訊（開放借用時段、場地可用性等），
+                                並透過 API 實現資料同步。<br>
+                                開發過程中，我負責<b>網頁後端開發與資料庫設計</b>，並整合 LINE Bot 與 Web 技術。<br>
+                                透過解決時段判斷與資料處理等問題，提升系統穩定性與效能。<br>
+                                <b>在這次專案中讓我強化系統開發與整合能力，並深化對使用者需求的理解。</b>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.9</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P10 作品集 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">06 · PORTFOLIO</div>
+                <div class="sec-title">作品集</div>
+            </div>
+            <div class="sec-body">
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    365存錢紀錄網</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="work-card" style="overflow:hidden; height: 100%;"><img src="365截圖.png" alt="ezBorrow"
+                            style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+                </div>
+                <div class="field-block" style="margin-top:6px;">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">作品說明、介紹與心得</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                365存錢網為我因實際儲蓄需求所開發之系統。由於市面上缺乏能支援隨機產生 1~365 不重複數字、並即時顯示存錢狀態與進度的工具，因此我自行設計並實作此平台。<br>
+                                系統採用 FastAPI 與 MySQL 建構，能記錄每日存入金額與日期，並透過表格呈現完成狀態，結合進度條比較預期與實際儲蓄進度。<br>
+                                本專題<b>由我獨立完成全端開發</b>，包含隨機演算法設計、資料庫規劃與前端互動呈現。最終結果也成功持續存完365天<br>
+                                透過本次實作，<b>我強化了系統設計與資料處理能力，並學習從使用者需求出發，開發具實務性的應用系統</b>。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.10</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P11 活動幹部 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">07 · ACTIVITIES &amp; LEADERSHIP</div>
+                <div class="sec-title">活動 · 幹部證明</div>
+            </div>
+            <div class="sec-body">
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">幹部職務</div>
+                        <div class="cert-item">
+                            <div class="cert-dot"></div>
+                            <div class="cert-name">第五屆資訊工程科學會副會長（附幹部證明）</div>
+                            <div class="cert-date">2023</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">活動參與</div>
+                        <div class="cert-item">
+                            <div class="cert-dot"></div>
+                            <div class="cert-name">資訊工程科迎新大露營</div>
+                            <div class="cert-date">2023</div>
+                        </div>
+                        <div class="cert-item">
+                            <div class="cert-dot"></div>
+                            <div class="cert-name">台積電產學合作課程 - LIT|CMP機台基礎16小時</div>
+                            <div class="cert-date">2026</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">備註</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:12px;">
+                                相關證書影本將附於最後 附件 頁面，並依上方清單順序排列<br>
+                                附件六：第五屆資訊工程科學會副會長<br>
+                                附件七：資訊工程科迎新大露營<br>
+                                附件八：台積電產學合作課程 - LIT|CMP機台基礎16小時<br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.11</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P12 未來展望 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">08 · FUTURE GOALS</div>
+                <div class="sec-title">未來展望</div>
+            </div>
+            <div class="sec-body">
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">短期目標（在學期間）</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                進入二技後，我希望持續精進後端開發、資料庫設計與系統整合能力，並深入學習資訊管理以及更多關於商、會計等的相關知識。<br>
+                                同時，我也希望參與專題研究或校外實習，累積實務經驗，提升團隊合作與問題解決能力，為未來進入資訊產業做好準備。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">中期目標（畢業後 3 年）</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                畢業後，我希望能進入軟體開發或資訊系統相關產業，從事後端工程或系統開發工作，持續累積大型系統開發與維護、運作經驗。<br>
+                                我期望能將在學期間所培養的技術能力應用於實際專案中，並透過不斷學習新技術，提升自身專業競爭力。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field-block">
+                    <div class="sec-accent"></div>
+                    <div class="field-content">
+                        <div class="field-label">長期願景</div>
+                        <div class="field-body">
+                            <div class="field-line" style="color:#7a6262;font-size:10px;">
+                                未來我希望成為具備系統規劃與整合能力的資訊人才，開發能真正解決使用者需求的系統與服務，提升生活便利性與資訊化效率。<br>
+                                同時，我也希望持續進修與學習新技術，關注人工智慧與智慧應用等領域發展，並將所學應用於實務，為資訊產業與社會帶來正向價值。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:auto;">
+                    <div style="text-align:center;padding:16px 0 4px;">
+                        <div style="font-size:10px;color:#ccc;letter-spacing:2px;">— END OF APPLICATION —</div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-number">P.12</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <!-- P13 附件 -->
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">09 · ATTACHMENT</div>
+                <div class="sec-title">附件</div>
+            </div>
+            <div class="sec-body">
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    附件一 - 114年度第二學期在學證明</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <img src="附件1-1142在學證明.jpg" alt="1142"
+                        style="width:100%;height:100%;object-fit:contain;display:block;">
+                </div>
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    附件二 - 歷年成績單</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <img src="附件2-歷年成績單.jpg" alt="score"
+                        style="width:100%;height:95%;object-fit:contain;display:block;">
+                </div>
+            </div>
+            <div class="page-number">P.13</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">09 · ATTACHMENT</div>
+                <div class="sec-title">附件</div>
+            </div>
+            <div class="sec-body">
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    附件三 - PVQC科技英文-專家級</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <img src="附件3-PVQC.jpeg" alt="PVQC"
+                        style="width:100%;height:100%;object-fit:contain;display:block;">
+                </div>
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    附件四 - 多益TOEIC-金色證書</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <img src="附件4-多益金證.jpg" alt="TOEIC"
+                        style="width:100%;height:100%;object-fit:contain;display:block;">
+                </div>
+            </div>
+            <div class="page-number">P.14</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">09 · ATTACHMENT</div>
+                <div class="sec-title">附件</div>
+            </div>
+            <div class="sec-body">
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    附件五 - TQC+專業設計人才認證</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <img src="附件5-TQCPlus.jpeg" alt="TQC+"
+                        style="width:100%;height:100%;object-fit:contain;display:block;">
+                </div>
+                <div
+                    style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-align: center;">
+                    附件六 - 第五屆資訊工程科學會副會長 - 幹部證明</div>
+                <div class="works-grid" style="display: flex; flex-direction: column; gap: 10px;">
+                    <img src="附件6-科會幹部證明.jpeg" alt="CSIE"
+                        style="width:100%;height:45%;object-fit:contain;display:block;">
+                </div>
+            </div>
+            <div class="page-number">P.15</div>
+            <div class="footer-bar"></div>
+        </div>
+
+        <div class="page">
+            <div class="sec-header">
+                <div class="sec-num">09 · ATTACHMENT</div>
+                <div class="sec-title">附件</div>
+            </div>
+            <div class="sec-body" style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font-size:13px;font-weight:600;color:var(--navy);text-align:center;">
+                    附件七 - 資訊工程科迎新大露營 - 副召證明
+                </div>
+                <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px;">
+                    <img src="附件7-迎新證明.png" alt="Camp"
+                        style="max-width:100%;max-height:100%;object-fit:contain;display:block;">
+                </div>
+
+                <div style="font-size:13px;font-weight:600;color:var(--navy);text-align:center;">
+                    附件八 - 台積電產學合作課程 - 研習證明
+                </div>
+                <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px;">
+                    <img src="附件8-台積電研習證明.jpeg" alt="TSMC"
+                        style="max-width:100%;max-height:100%;object-fit:contain;display:block;">
+                </div>
+            </div>
+            <div class="page-number">P.16</div>
+            <div class="footer-bar"></div>
+        </div>
+    </div>
 </body>
+
 </html>
